@@ -196,3 +196,4 @@ application-prod.properties
 ampd.log*
 javampd
 checkstyle-result.xml
+angularclient/TESTS-*
