@@ -26,7 +26,7 @@
         </span>
     </button>
 
-    <span [routerLink]="['/']" fxHide.lt-md class="logo">ampd</span>
+    <span [routerLink]="['/']" fxHide.lt-md class="logo" id="ampd-logo">ampd</span>
     <span class="fill-space"></span>
     <div [ngSwitch]="connState|async">
       <mat-spinner color="accent" diameter="30" *ngSwitchCase="0"></mat-spinner>
