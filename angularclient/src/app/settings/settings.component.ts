@@ -5,10 +5,13 @@ import { NotificationService } from "../shared/services/notification.service";
 import { WebSocketService } from "../shared/services/web-socket.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
-
-import { HttpClient } from "@angular/common/http";
 import { BackendSettings } from "../shared/models/backend-settings";
-import { SettingsService } from "../shared/services/settings.service";
+import {
+  DISPLAY_COVERS_KEY,
+  DISPLAY_SAVE_PLAYLIST_KEY,
+  SettingsService,
+} from "../shared/services/settings.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-settings",
@@ -16,12 +19,14 @@ import { SettingsService } from "../shared/services/settings.service";
   styleUrls: ["./settings.component.scss"],
 })
 export class SettingsComponent {
-  ampdVersion: string;
+  ampdVersion = environment.ampdVersion;
   coverCacheUsage = new Observable<number>();
-  gitCommitId: string;
+  gitCommitId = environment.gitCommitId;
   isDarkTheme: Observable<boolean>;
   isDisplayCovers: boolean;
+  isDisplaySavePlaylist: boolean;
   backendSettings: Observable<BackendSettings>;
+  coverBlacklist: Observable<string[]>;
   settingsForm: FormGroup;
 
   constructor(
@@ -29,17 +34,25 @@ export class SettingsComponent {
     private webSocketService: WebSocketService,
     private formBuilder: FormBuilder,
     private settingsService: SettingsService,
-    private http: HttpClient
+    private activatedRoute: ActivatedRoute
   ) {
-    const savedAddr = ConnConfUtil.getBackendAddr();
-    this.ampdVersion = environment.ampdVersion;
-    this.gitCommitId = environment.gitCommitId;
-    this.isDarkTheme = this.settingsService.isDarkTheme();
-    this.backendSettings = this.getSettings();
-    this.isDisplayCovers = this.settingsService.isDisplayCovers();
     this.settingsForm = this.formBuilder.group({
-      backendAddr: [savedAddr, Validators.required],
+      backendAddr: [this.getBackendAddr(), Validators.required],
     });
+    // Backend settings
+    this.isDarkTheme = this.settingsService.isDarkTheme();
+    this.isDisplayCovers = this.settingsService.getBoolValue(
+      DISPLAY_COVERS_KEY,
+      true
+    );
+    this.isDisplaySavePlaylist = this.settingsService.getBoolValue(
+      DISPLAY_SAVE_PLAYLIST_KEY,
+      true
+    );
+    // Frontend settings
+    this.coverCacheUsage = this.settingsService.getCoverCacheDiskUsage();
+    this.backendSettings = this.settingsService.getBackendSettings();
+    this.coverBlacklist = this.settingsService.getCoverBlacklist();
   }
 
   onSubmit(): void {
@@ -58,20 +71,28 @@ export class SettingsComponent {
   }
 
   toggleDisplayCovers(checked: boolean): void {
-    this.settingsService.setDisplayCovers(checked);
+    this.settingsService.setBoolVale(DISPLAY_COVERS_KEY, checked);
     this.notificationService.popUp("Saved settings.");
   }
 
-  private getSettings() {
-    this.coverCacheUsage = this.getCoverCacheDiskUsage();
-    const backendAddr = ConnConfUtil.getBackendAddr();
-    const url = `${backendAddr}/api/settings`;
-    return this.http.get<BackendSettings>(url);
+  toggleDisplaySavePlaylist(checked: boolean): void {
+    this.settingsService.setBoolVale(DISPLAY_SAVE_PLAYLIST_KEY, checked);
+    this.notificationService.popUp("Saved settings.");
   }
 
-  private getCoverCacheDiskUsage() {
-    const backendAddr = ConnConfUtil.getBackendAddr();
-    const url = `${backendAddr}/api/cover-usage`;
-    return this.http.get<number>(url);
+  private getBackendAddr() {
+    let getParam =
+      this.activatedRoute.snapshot.queryParamMap.get("backend") || "";
+    if (getParam) {
+      // We got a backend addr via get paramater, save and display it
+      if (!getParam.startsWith("http://")) {
+        getParam = `http://${getParam}`;
+      }
+      ConnConfUtil.setBackendAddr(getParam);
+      return getParam;
+    }
+
+    // Return the saved backend addr
+    return ConnConfUtil.getBackendAddr();
   }
 }

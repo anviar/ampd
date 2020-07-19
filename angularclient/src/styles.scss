@@ -68,6 +68,18 @@ table {
 $hover-background-color: var(--hover-background-color);
 $background-color: var(--background-color);
 $border-color: var(--border-color);
+$font-color: var(--font-color);
+
+// "Normal" hyperlinks
+.no-deco-links {
+  text-decoration: none;
+  color: var(--font-color);
+}
+
+.no-deco-links:hover {
+  text-decoration: underline;
+  color: var(--font-color);
+}
 
 // Track table
 .table-row:hover {
@@ -118,7 +130,7 @@ $border-color: var(--border-color);
   background: var(--background-color);
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 1280px) {
   // Needs to be here to override Angular's own padding
   .browse-list-item > .mat-list-item-content {
     padding-right: 5px !important;
@@ -166,4 +178,14 @@ $border-color: var(--border-color);
 .code {
   border: 1px solid var(--border-color);
   background: var(--background-color);
+}
+
+.smaller-font {
+  font-size: smaller !important;
+}
+
+.bottom-divider {
+  /* top | right | bottom | left */
+  padding: 1rem 0 1rem 0;
+  margin: 1rem 0 1rem 0;
 }

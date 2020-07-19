@@ -4,11 +4,11 @@ import {
   Directory,
   DirectoryImpl,
 } from "../../shared/messages/incoming/directory-impl";
-import { MpdCommands } from "../../shared/mpd/mpd-commands";
 import { MessageService } from "../../shared/services/message.service";
 import { NotificationService } from "../../shared/services/notification.service";
 import { WebSocketService } from "../../shared/services/web-socket.service";
 import { Filterable } from "../filterable";
+import { MpdCommands } from "../../shared/mpd/mpd-commands.enum";
 
 @Component({
   selector: "app-directories",
@@ -29,9 +29,6 @@ export class DirectoriesComponent extends Filterable {
     super(messageService);
     this.getParamDir =
       this.activatedRoute.snapshot.queryParamMap.get("dir") || "/";
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.getParamDir = <string>queryParams.dir || "/";
-    });
   }
 
   onPlayDir($event: MouseEvent, dir: string): void {

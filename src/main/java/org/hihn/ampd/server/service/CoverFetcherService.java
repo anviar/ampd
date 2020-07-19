@@ -15,47 +15,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Looks for album art and covers.
+ * Searches the local cache and MusicBrainz for covers.
  */
 @Service
-public class CoverArtFetcherService {
+public class CoverFetcherService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CoverArtFetcherService.class);
-
+  private static final Logger LOG = LoggerFactory.getLogger(CoverFetcherService.class);
+  private final CoverBlacklistService coverBlacklistService;
   private final CoverCacheService coverCacheService;
-
   private final MbCoverService mbCoverService;
-
   private final Mpd mpd;
-
   private final SettingsBean settingsBean;
 
-  public CoverArtFetcherService(
+  public CoverFetcherService(
       final CoverCacheService coverCacheService,
       final MbCoverService mbCoverService,
-      final MpdConfiguration mpdConfiguration, SettingsBean settingsBean) {
+      final MpdConfiguration mpdConfiguration, SettingsBean settingsBean,
+      CoverBlacklistService coverBlacklistService) {
     this.coverCacheService = coverCacheService;
     this.mbCoverService = mbCoverService;
     this.settingsBean = settingsBean;
     mpd = mpdConfiguration.mpd();
-  }
-
-  /**
-   * See if the path of track leads to an album directory and try to load the cover.
-   *
-   * @param trackFilePath The file path of a track.
-   * @return The bytes of the found cover.
-   */
-  public Optional<byte[]> findAlbumCoverForTrack(final Optional<String> trackFilePath) {
-    if (trackFilePath.isEmpty()) {
-      return Optional.empty();
-    }
-    final Collection<MpdSong> foundSongs = mpd.getMusicDatabase().getSongDatabase()
-        .searchFileName(trackFilePath.get());
-    if (foundSongs.size() == 1) {
-      return getAlbumCoverForTrack(foundSongs.iterator().next());
-    }
-    return Optional.empty();
+    this.coverBlacklistService = coverBlacklistService;
   }
 
   /**
@@ -77,6 +58,24 @@ public class CoverArtFetcherService {
   }
 
   /**
+   * See if the path of track leads to an album directory and try to load the cover.
+   *
+   * @param trackFilePath The file path of a track.
+   * @return The bytes of the found cover.
+   */
+  public Optional<byte[]> findAlbumCoverForTrack(final Optional<String> trackFilePath) {
+    if (trackFilePath.isEmpty()) {
+      return Optional.empty();
+    }
+    final Collection<MpdSong> foundSongs = mpd.getMusicDatabase().getSongDatabase()
+        .searchFileName(trackFilePath.get());
+    if (foundSongs.size() == 1) {
+      return getAlbumCoverForTrack(foundSongs.iterator().next());
+    }
+    return Optional.empty();
+  }
+
+  /**
    * Searches multiple sources for the cover of the currently played track.
    *
    * @return The bytes of the found cover.
@@ -86,7 +85,7 @@ public class CoverArtFetcherService {
   }
 
   private Optional<byte[]> getAlbumCoverForTrack(final MpdSong track) {
-    if (track == null) {
+    if (track == null || coverBlacklistService.isBlacklisted(track.getFile())) {
       return Optional.empty();
     }
     final CoverType coverType =

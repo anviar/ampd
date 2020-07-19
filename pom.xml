@@ -9,7 +9,7 @@
   </parent>
   <groupId>org.hihn.ampd</groupId>
   <artifactId>ampd</artifactId>
-  <version>1.2.2-SNAPSHOT</version>
+  <version>1.2.3-SNAPSHOT</version>
   <name>ampd</name>
   <description>Spring Boot server for the ampd-client</description>
   <properties>
@@ -17,7 +17,7 @@
     <java.version>11</java.version>
     <project.scm.id>github</project.scm.id>
     <frontend.prod>true</frontend.prod>
-    <frontend.url>localhost</frontend.url>
+    <frontend.url>localhost:8080</frontend.url>
     <frontend.https>false</frontend.https>
     <frontend.context>/</frontend.context>
     <skip.npm>false</skip.npm>
@@ -188,13 +188,38 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.0.4</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Default</threshold>
+          <spotbugsXmlOutput>true</spotbugsXmlOutput>
+          <spotbugsXmlOutputDirectory>target/site</spotbugsXmlOutputDirectory>
+          <skipEmptyReport>false</skipEmptyReport>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <includeTests>true</includeTests>
+          <classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
+          <xmlOutput>true</xmlOutput>
+          <plugins>
+            <plugin>
+              <groupId>jp.skypencil.findbugs.slf4j</groupId>
+              <artifactId>bug-pattern</artifactId>
+              <version>1.5.0</version>
+            </plugin>
+          </plugins>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>spotbugs</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.1</version>
         <configuration>
-          <configLocation>${project.resources[0].directory}/ampd_google_checks.xml</configLocation>
+          <configLocation>${basedir}/src/main/resources/ampd_google_checks.xml</configLocation>
         </configuration>
         <reportSets>
           <reportSet>
