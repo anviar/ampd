@@ -69,6 +69,12 @@
       <artifactId>musicbrainzws2-java</artifactId>
       <version>3.0.15</version>
     </dependency>
+    <!-- Test -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
 
