@@ -28,7 +28,7 @@ public class BrowseService {
   }
 
   /**
-   * Generell browse request for a path. Includes directories, tracks and playlists.
+   * General browse request for a path. Includes directories, tracks and playlists.
    *
    * @param path The path to browse
    * @return Object with the directories, tracks and playlist of the given path.
@@ -92,6 +92,4 @@ public class BrowseService {
     }
     return ret;
   }
-
-
 }

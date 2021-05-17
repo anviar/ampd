@@ -1,0 +1,17 @@
+<div
+    fxLayout="row wrap"
+    fxLayoutAlign="space-between"
+    fxLayoutGap="1rem grid"
+    fxLayoutGap.lt-md="0.25rem grid"
+    *ngIf="albums"
+>
+  <ul>
+  <li
+      *ngFor="let album of (albums|async)"
+  >
+        {{album.artistName}}
+        -
+        {{album.name}}
+  </li>
+  </ul>
+</div>
