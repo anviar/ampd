@@ -1,0 +1,15 @@
+<p>genres works!</p>
+
+<div *ngIf="genres | async as genreslist">
+  <div *ngFor="let genre of genreslist">
+    {{ genre }}
+  </div>
+</div>
+
+a{{error}}b
+
+<!-- Error handling -->
+<div fxFlex *ngIf="error| async as xxx">
+  {{ xxx }}
+  <app-error [error]="xxx"></app-error>
+</div>

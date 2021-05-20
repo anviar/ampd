@@ -1,5 +1,7 @@
 package org.hihn.ampd.server.sender;
 
+import java.util.Collection;
+import org.bff.javampd.genre.MPDGenre;
 import org.bff.javampd.server.MPD;
 import org.hihn.ampd.server.message.incoming.MpdModesPanelMsg;
 import org.hihn.ampd.server.message.outgoing.StatePayload;

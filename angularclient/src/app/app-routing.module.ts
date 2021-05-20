@@ -4,10 +4,12 @@ import { BrowseComponent } from "./browse/browse.component";
 import { QueueComponent } from "./queue/queue.component";
 import { SearchComponent } from "./search/search.component";
 import { SettingsComponent } from "./settings/settings.component";
+import {GenresComponent} from "./genres/genres.component";
 
 const routes: Routes = [
   { path: "", component: QueueComponent },
   { path: "browse", component: BrowseComponent },
+  { path: "genres", component: GenresComponent },
   { path: "search", component: SearchComponent },
   { path: "settings", component: SettingsComponent },
   { path: "**", redirectTo: "" },
