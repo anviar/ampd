@@ -14,7 +14,7 @@ public class StaticPageController {
    *
    * @return Path to the html-file that contains Angular app.
    */
-  @RequestMapping(value = {"/", "/browse", "/search", "/settings", "/ampd/"})
+  @RequestMapping(value = {"/", "/browse", "/search", "/settings", "/genres", "/ampd/"})
   public String index() {
     return "forward:/index.html";
   }
