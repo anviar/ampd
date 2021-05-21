@@ -4,7 +4,7 @@ import { BrowseComponent } from "./browse/browse.component";
 import { QueueComponent } from "./queue/queue.component";
 import { SearchComponent } from "./search/search.component";
 import { SettingsComponent } from "./settings/settings.component";
-import {GenresComponent} from "./genres/genres.component";
+import { GenresComponent } from "./genres/genres.component";
 
 const routes: Routes = [
   { path: "", component: QueueComponent },

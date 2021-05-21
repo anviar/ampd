@@ -1,9 +1,13 @@
-<p>genres works!</p>
-
-<div *ngIf="genres | async as genreslist">
-  <div *ngFor="let genre of genreslist">
-    {{ genre }}
-  </div>
+<div
+  fxLayout="row wrap"
+  fxLayoutAlign="space-between"
+  *ngIf="genres | async as genreslist"
+>
+  <mat-chip-list>
+    <mat-chip *ngFor="let genre of genreslist">
+      {{ genre }}
+    </mat-chip>
+  </mat-chip-list>
 </div>
 
 <!-- Error handling -->

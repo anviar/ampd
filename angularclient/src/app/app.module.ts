@@ -89,6 +89,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { CoverGridEntryComponent } from "./browse/directories/cover-grid/cover-grid-entry/cover-grid-entry.component";
 import { PaginationComponent } from "./settings/frontend/pagination/pagination.component";
 import { GenresComponent } from "./genres/genres.component";
+import { MatChipsModule } from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -162,6 +163,7 @@ import { GenresComponent } from "./genres/genres.component";
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
+    MatChipsModule,
     MatDialogModule,
     MatDividerModule,
     DragDropModule,
