@@ -6,10 +6,7 @@
   </div>
 </div>
 
-a{{error}}b
-
 <!-- Error handling -->
-<div fxFlex *ngIf="error| async as xxx">
-  {{ xxx }}
-  <app-error [error]="xxx"></app-error>
+<div fxFlex *ngIf="error">
+  <app-error [error]="error"></app-error>
 </div>

@@ -21,7 +21,7 @@ public class GenresController {
     this.genresService = genresService;
   }
 
-  @GetMapping("/genresx")
+  @GetMapping("/genres")
   public Set<String> genres() {
     return genresService.listAll();
   }
