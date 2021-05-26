@@ -21,7 +21,6 @@ public class GenresService {
   }
 
   public Set<String> listAll() {
-    foo();
     Set<String> ret = new TreeSet<>();
     Collection<MPDGenre> mpdGenres = mpd.getMusicDatabase().getGenreDatabase().listAllGenres();
     for (MPDGenre genre : mpdGenres) {
@@ -34,8 +33,9 @@ public class GenresService {
     return ret;
   }
 
-  private void foo() {
-    Collection<MPDSong> res = mpd.getSongSearcher().search(ScopeType.GENRE, "Jazz");
-    System.out.println(1);
+  public Collection<MPDSong> listSongs(String genre) {
+    genre = "Acid, Funk";
+    Collection<MPDSong> res = mpd.getSongSearcher().search(ScopeType.GENRE, genre);
+    return res;
   }
 }

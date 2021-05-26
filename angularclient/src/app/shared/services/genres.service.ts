@@ -15,7 +15,7 @@ export class GenresService {
   ) {}
 
   listAll(): Observable<String[]> {
-    const url = `${this.settingsService.getBackendContextAddr()}api/genres`;
+    const url = `${this.settingsService.getBackendContextAddr()}api/genres/`;
     return this.http.get<String[]>(url).pipe(
       catchError((err: HttpErrorResponse) =>
         throwError({
