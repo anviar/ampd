@@ -23,7 +23,8 @@ public class GenresService {
   public Set<String> listAll() {
     foo();
     Set<String> ret = new TreeSet<>();
-    for (MPDGenre genre : mpd.getMusicDatabase().getGenreDatabase().listAllGenres()) {
+    Collection<MPDGenre> mpdGenres = mpd.getMusicDatabase().getGenreDatabase().listAllGenres();
+    for (MPDGenre genre : mpdGenres) {
       if (genre.getName().equals("")) {
         continue;
       }

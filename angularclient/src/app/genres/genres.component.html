@@ -16,7 +16,7 @@
     *ngIf="genres | async as genreslist"
 >
   <mat-chip-list>
-    <mat-chip *ngFor="let genre of genreslist"
+    <mat-chip *ngFor="let genre of genreslist | slice:0:15"
               [value]="genre"
               (click)="onChange(genre)"
     >
