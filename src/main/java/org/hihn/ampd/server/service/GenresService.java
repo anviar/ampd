@@ -34,7 +34,6 @@ public class GenresService {
   }
 
   public Collection<MPDSong> listSongs(String genre) {
-    genre = "Acid, Funk";
     Collection<MPDSong> res = mpd.getSongSearcher().search(ScopeType.GENRE, genre);
     return res;
   }
