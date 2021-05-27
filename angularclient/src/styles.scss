@@ -200,3 +200,7 @@ $font-color: var(--font-color);
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+.mat-chip {
+  cursor: pointer;
+}
