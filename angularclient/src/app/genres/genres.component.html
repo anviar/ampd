@@ -1,29 +1,25 @@
-<div
-    fxLayout="row wrap"
->
-  <mat-chip *ngFor="let genre of selected"
-            [value]="genre"
-  >
-    {{ genre }}
-  </mat-chip>
-</div>
+<span class="mat-display-1"> Genres </span>
 
 <mat-divider></mat-divider>
 
 <div
-    fxLayout="row wrap"
-    fxLayoutAlign="space-between"
-    *ngIf="genres | async as genreslist"
+  class="chips"
+  fxLayout="row wrap"
+  fxLayoutAlign="space-between"
+  *ngIf="genres | async as genreslist"
 >
   <mat-chip-list>
-    <mat-chip *ngFor="let genre of genreslist | slice:0:15"
-              [value]="genre"
-              (click)="onChange(genre)"
+    <mat-chip
+      *ngFor="let genre of genreslist"
+      [value]="genre"
+      (click)="onChange(genre)"
     >
       {{ genre }}
     </mat-chip>
   </mat-chip-list>
 </div>
+
+<app-track-data-table [trackTableData]="trackTableData"></app-track-data-table>
 
 <!-- Error handling -->
 <div fxFlex *ngIf="error">
