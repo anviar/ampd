@@ -1,4 +1,11 @@
-<span class="mat-display-1"> Genres </span>
+<div class="mat-display-1" fxLayout="row" fxLayoutAlign="space-between">
+  <span fxFlex="50%"> Genres </span>
+  <div *ngIf="selected">
+    <mat-chip>
+      {{ selected }}
+    </mat-chip>
+  </div>
+</div>
 
 <mat-divider></mat-divider>
 

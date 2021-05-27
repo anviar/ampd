@@ -17,6 +17,7 @@ export class GenresComponent {
   error: ErrorMsg | null = null;
   genres: Observable<string[]> | null = null;
   isMobile = false;
+  selected: string = "";
   trackTableData = new TrackTableData();
 
   constructor(private genresService: GenresService) {
@@ -31,6 +32,7 @@ export class GenresComponent {
   }
 
   onChange(genre: string) {
+    this.selected = genre;
     this.genresService.getWords(genre).subscribe((tracks) => {
       const tableData = tracks.map(
         (track, index) => new QueueTrack(track, index)
