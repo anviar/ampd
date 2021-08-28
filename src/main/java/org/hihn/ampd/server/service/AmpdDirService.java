@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +21,14 @@ public class AmpdDirService {
    * Name of the dir that holds all covers.
    */
   private static final String CACHE_DIR_NAME = "covers";
+
+  /**
+   * Name of the meta file that holds all metadata of tracks.
+   */
+  private static final String MEATA_FILE_NAME = "meta.txt";
+
+  @Value("${mpd.meta.directory}")
+  private String metaDirectory;
 
   private static final Logger LOG = LoggerFactory.getLogger(AmpdDirService.class);
 
@@ -81,6 +90,41 @@ public class AmpdDirService {
       return Optional.empty();
     }
     return Optional.of(cacheDirPath);
+  }
+
+  /**
+   * Returns the path of the ampd meta file. Creates it, if it doesn't exist.
+   *
+   * @return The path of the meta dir.
+   */
+  public Optional<Path> getMetaFile() {
+    final Path path = Paths
+            .get(metaDirectory, MEATA_FILE_NAME);
+
+    if (!Files.exists(path)) {
+      try {
+        boolean created = path.toFile().createNewFile();
+        if (!created) {
+          LOG.debug("File already exists: {}", path);
+        }
+      } catch (IOException e) {
+        LOG.error("Could not create the meta file: {}", path);
+        return Optional.empty();
+      }
+    }
+    if (!Files.exists(path)) {
+      LOG.warn(
+              "Could not find the meta file: {}. This is not fatal, "
+                      + "it just means, we can't save or load the meta files which "
+                      + "shoud describe music tracks.",
+              path);
+      return Optional.empty();
+    }
+    if (!new File(path.toString()).canWrite()) {
+      LOG.warn("Cannot write meta file: {}", path);
+      return Optional.empty();
+    }
+    return Optional.of(path);
   }
 }
 
